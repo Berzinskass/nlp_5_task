@@ -1,0 +1,9 @@
+text,nn_text,emotion,nn_label,nn_sim
+manau nepyksit per daug kad aš tą pareiškimą noriu pakeisti kitaip sakant susavinti,manau nepyksit per daug kad aš tą pareiškimą noriu pakeisti kitaip sakant,neutral,neutral,0.9249444297427366
+reikėtų atsiverti ir platesnio požiūriu teikia urbonaitė barkauskienė,reikėtų atsiverti ir platesnio požiūrio teikia urbonaitė barkauskienė,neutral,neutral,0.967432571123421
+įprastai šį sunkų jausmą lydi palengvėjimas kai galime paleisti sunkius jausmus,įprastai šį sunkų jausmą lydi palengvėjimas kai galima paleisti sunkius jausmus,sadness,sadness,0.978987674548945
+eik tu sau tai pirmas žodis kurį ištari,eik tu sau tai pirmas žodis kurį ištari kai,surprise,surprise,0.9863088117754502
+tiesiog pasitaikė proga apie tai pakalbėti seniai norėjau,tiesiog pasitaikė proga apie tai pasikalbėti seniai norėjau,surprise,surprise,0.9139987770409331
+ir apklausianti studentė o ant viryklės prisvilo puodai aš ir gustė išvirėm,ir apklausianti studentė o ant viryklės prisvilo puodai aš ir gustė išvirėm joms dar kavos,sadness,sadness,0.9365302158908919
+ir visiems laisvai kalbėk pamokslauk ragink skelbt tiesą garsiu džiaugsmingu balsu šaukdamas,ir visiems laisvai kalbėk pamokslauk ragink skelbk tiesą garsiu džiaugsmingu balsu šaukdamas,joy,joy,0.9338388907833038
+kaip tau ne gėda,ir tau ne gėda,anger,anger,0.9046499748924336

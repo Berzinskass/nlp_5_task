@@ -1,0 +1,22 @@
+{
+ "TF-IDF": {
+  "dim": 126679,
+  "fit_s": 3.33625864982605,
+  "sparsity_%": 99.99,
+  "mean_nonzero_per_text": 12.4
+ },
+ "FastText": {
+  "dim": 300,
+  "fit_s": 45.3740873336792,
+  "vocab": 33757,
+  "sparsity_%": 0.0,
+  "mean_nonzero_per_text": 300.0
+ },
+ "SBERT": {
+  "dim": 384,
+  "fit_s": 375.4295926094055,
+  "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "sparsity_%": 0.0,
+  "mean_nonzero_per_text": 384.0
+ }
+}

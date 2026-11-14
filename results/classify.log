@@ -25,3 +25,43 @@ train 107960 test 26991
 }
 TF-IDF val {1: 0.9247, 3: 0.9444, 10: 0.95, 30: 0.9511} -> {'representation': 'TF-IDF', 'dim': 126679, 'C': 30, 'val_macro_F1': 0.9511, 'accuracy': 0.945907895224334, 'precision_macro': 0.9460640087006104, 'recall_macro': 0.9452305486440705, 'F1_macro': 0.9456160212337978, 'F1_weighted': 0.9458972533347343, 'train_s': 39.5}
 FastText val {0.01: 0.6431, 0.1: 0.6485, 1: 0.6477, 10: 0.6471} -> {'representation': 'FastText', 'dim': 300, 'C': 0.1, 'val_macro_F1': 0.6485, 'accuracy': 0.6352858360194139, 'precision_macro': 0.6347743775165966, 'recall_macro': 0.6304661732261706, 'F1_macro': 0.631284557571103, 'F1_weighted': 0.6337480217549811, 'train_s': 17.3}
+SBERT val {0.01: 0.6294, 0.1: 0.6322, 1: 0.6324, 10: 0.632} -> {'representation': 'SBERT', 'dim': 384, 'C': 1, 'val_macro_F1': 0.6324, 'accuracy': 0.6199473898706976, 'precision_macro': 0.621011933528089, 'recall_macro': 0.6155998624196319, 'F1_macro': 0.6170909741106614, 'F1_weighted': 0.6190755718533886, 'train_s': 14.5}
+  representation     dim     C  val_macro_F1  accuracy  precision_macro  recall_macro  F1_macro  F1_weighted  train_s
+0         TF-IDF  126679  30.0        0.9511    0.9459           0.9461        0.9452    0.9456       0.9459     39.5
+1       FastText     300   0.1        0.6485    0.6353           0.6348        0.6305    0.6313       0.6337     17.3
+2          SBERT     384   1.0        0.6324    0.6199           0.6210        0.6156    0.6171       0.6191     14.5
+            TF-IDF                  FastText  ...              SBERT                
+         precision recall f1-score precision  ... f1-score precision recall f1-score
+neutral      0.946  0.958    0.952     0.651  ...    0.680     0.628  0.698    0.661
+joy          0.957  0.938    0.947     0.698  ...    0.667     0.704  0.638    0.669
+surprise     0.944  0.940    0.942     0.621  ...    0.584     0.594  0.528    0.559
+sadness      0.938  0.937    0.938     0.558  ...    0.547     0.565  0.559    0.562
+anger        0.946  0.952    0.949     0.647  ...    0.679     0.615  0.656    0.635
+
+[5 rows x 9 columns]
+   representation      true predicted  count  pct_of_true
+0          TF-IDF       joy   sadness     99          2.0
+1          TF-IDF   sadness   neutral     94          1.8
+2          TF-IDF  surprise   neutral     93          1.9
+3          TF-IDF   sadness     anger     92          1.7
+4          TF-IDF  surprise     anger     90          1.9
+5        FastText   sadness     anger    785         14.7
+6        FastText  surprise     anger    775         16.0
+7        FastText   sadness   neutral    686         12.9
+8        FastText  surprise   neutral    658         13.6
+9        FastText   neutral   sadness    647         10.4
+10          SBERT   sadness     anger    850         15.9
+11          SBERT     anger   sadness    775         13.8
+12          SBERT  surprise     anger    764         15.8
+13          SBERT  surprise   neutral    715         14.8
+14          SBERT       joy   neutral    670         13.4
+all three wrong: 3.2%, all right: 49.0%
+       TF-IDF  FastText  SBERT       n
+bin                                   
+1-3     0.854     0.540  0.480  5238.0
+4-6     0.939     0.592  0.579  8734.0
+7-10    0.982     0.676  0.675  7355.0
+11-15   0.993     0.734  0.736  4470.0
+16+     0.997     0.749  0.753  1194.0
+near-duplicate test texts (%): {'>= 0.8': 74.8, '>= 0.9': 47.81, '>= 0.95': 25.88}
+done

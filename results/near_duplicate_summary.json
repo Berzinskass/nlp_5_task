@@ -1,0 +1,5 @@
+{
+ "test_with_nn_sim_ge_0.9_%": 47.8,
+ "nearest_train_neighbour_same_label_%": 95.6,
+ "1-NN char-ngram classifier accuracy": 0.9561
+}

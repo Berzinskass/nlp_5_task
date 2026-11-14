@@ -1,0 +1,16 @@
+representation,true,predicted,count,pct_of_true
+TF-IDF,joy,sadness,99,2.0
+TF-IDF,sadness,neutral,94,1.8
+TF-IDF,surprise,neutral,93,1.9
+TF-IDF,sadness,anger,92,1.7
+TF-IDF,surprise,anger,90,1.9
+FastText,sadness,anger,785,14.7
+FastText,surprise,anger,775,16.0
+FastText,sadness,neutral,686,12.9
+FastText,surprise,neutral,658,13.6
+FastText,neutral,sadness,647,10.4
+SBERT,sadness,anger,850,15.9
+SBERT,anger,sadness,775,13.8
+SBERT,surprise,anger,764,15.8
+SBERT,surprise,neutral,715,14.8
+SBERT,joy,neutral,670,13.4

@@ -2,3 +2,5 @@ data/metadata.csv
 __pycache__/
 *.pyc
 models/
+report/report.html
+report/report_full.md

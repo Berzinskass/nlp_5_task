@@ -1,0 +1,10 @@
+pandas>=2
+numpy
+scikit-learn>=1.5
+matplotlib
+wordcloud
+spacy>=3.7
+gensim>=4.3
+sentence-transformers>=3
+torch
+huggingface_hub

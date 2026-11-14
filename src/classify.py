@@ -130,16 +130,6 @@ for ax, (name, cm) in zip(axes, cms.items()):
     ax.set_title(f"{name} (acc. {acc:.3f})"); ax.grid(False)
 fig.tight_layout(); fig.savefig(FIG / "fig6_confusion_matrices.png"); plt.close(fig)
 
-# per-class F1 comparison
-fig, ax = plt.subplots(figsize=(6.4, 2.6))
-x = np.arange(5); w = 0.26
-shades = {"TF-IDF": "#86b6ef", "FastText": "#2a78d6", "SBERT": "#184f95"}
-for i, name in enumerate(X):
-    ax.bar(x + (i - 1) * (w + 0.01), per_class[(name, "f1-score")].values, w, color=shades[name], label=name)
-ax.set_xticks(x, ORDER); ax.set_ylabel("F1-score"); ax.set_ylim(0, 1); ax.grid(axis="x", visible=False)
-ax.legend(ncol=3, fontsize=7.5, loc="upper left", bbox_to_anchor=(0, 1.16))
-fig.savefig(FIG / "fig7_per_class_f1.png"); plt.close(fig)
-
 # ------------------------------------------------------------------ error analysis
 te = df.iloc[idx_te][["text", "emotion"]].reset_index(drop=True)
 for name in X: te[name] = preds[name]

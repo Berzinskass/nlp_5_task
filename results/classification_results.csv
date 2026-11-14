@@ -1,0 +1,4 @@
+representation,dim,C,val_macro_F1,accuracy,precision_macro,recall_macro,F1_macro,F1_weighted,train_s
+TF-IDF,126679,30.0,0.9511,0.9459,0.9461,0.9452,0.9456,0.9459,39.5
+FastText,300,0.1,0.6485,0.6353,0.6348,0.6305,0.6313,0.6337,17.3
+SBERT,384,1.0,0.6324,0.6199,0.621,0.6156,0.6171,0.6191,14.5

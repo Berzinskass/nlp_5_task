@@ -125,14 +125,13 @@ for ax, e in zip(axes, ORDER):
     ax.set_xlabel("per 1,000 tokens", fontsize=7.5)
 fig.tight_layout(); fig.savefig(FIG / "fig3_top_lemmas.png"); plt.close(fig)
 
-fig, axes = plt.subplots(2, 3, figsize=(10, 5.4))
+fig, axes = plt.subplots(1, 5, figsize=(12, 2.4))
 for ax, e in zip(axes.flat, ORDER):
-    wc = WordCloud(width=800, height=480, background_color="white", max_words=80, random_state=0,
+    wc = WordCloud(width=600, height=480, background_color="white", max_words=80, random_state=0,
                    color_func=lambda *a, c=COLORS[e], **k: c, prefer_horizontal=0.9, collocations=False)
     ax.imshow(wc.generate_from_frequencies(freq[e]), interpolation="bilinear")
     ax.set_title(e, fontsize=11); ax.axis("off")
-axes.flat[-1].axis("off")
-fig.tight_layout(); fig.savefig(FIG / "fig4_wordclouds.png"); plt.close(fig)
+fig.tight_layout(w_pad=0.6); fig.savefig(FIG / "fig4_wordclouds.png"); plt.close(fig)
 
 # ---------------------------------------------------------------- POS
 pos_counts = pd.DataFrame({e: Counter(p for s in df.loc[df.emotion == e, "pos"] for p in s.split()) for e in ORDER}).fillna(0)

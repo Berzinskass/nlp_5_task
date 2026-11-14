@@ -1,0 +1,26 @@
+text,emotion,TF-IDF,FastText,SBERT,n_correct,len
+ir tokiu būdu išvengti pavojų,surprise,neutral,sadness,neutral,0,5
+lietuvai jos tiesiog graibsto iš lentynų,joy,anger,surprise,surprise,0,6
+ir gegužės vakarais,sadness,joy,joy,joy,0,3
+valgyt noriu,sadness,anger,joy,anger,0,2
+o kas jiem,anger,surprise,surprise,surprise,0,3
+žaidimas vaivorykštė,joy,surprise,surprise,sadness,0,2
+valgyti nori,sadness,anger,anger,anger,0,2
+žvelgdami į dangų matote daugybę žvaigždžių,joy,sadness,sadness,sadness,0,6
+visi prasidėjo juo,joy,neutral,sadness,sadness,0,3
+dar lovoje,surprise,anger,sadness,sadness,0,2
+kažkas pakraigėje atplėšė lentą,surprise,sadness,neutral,sadness,0,4
+kasmet nuošu,surprise,sadness,neutral,sadness,0,2
+būna dienų kai nesinori,neutral,sadness,sadness,sadness,0,4
+tai miesto savival,joy,neutral,neutral,neutral,0,3
+kartu dirbti greičiausiai negalėsime,surprise,sadness,neutral,sadness,0,4
+buvome nusiteikę,neutral,sadness,joy,joy,0,2
+lietuvišką tekstą,anger,neutral,neutral,neutral,0,2
+reikėjo prašyti labai ilgai,neutral,sadness,sadness,sadness,0,4
+kiek mums svarbus,sadness,neutral,neutral,neutral,0,3
+o kaune yra baseinas,neutral,surprise,surprise,surprise,0,4
+mes mes pajuokavom,surprise,sadness,sadness,sadness,0,3
+jo beveik keturių tūkstančių penkių metrų aukščio viršūnė yra aukščiausia žemyninėje jav dalyje,neutral,surprise,surprise,surprise,0,13
+kodėl skiria jai tiek daug laiko,surprise,neutral,neutral,anger,0,6
+paliko gilų pėdsaką mano širdyje,joy,sadness,sadness,sadness,0,5
+o aš jai pavydžiu,surprise,sadness,joy,neutral,0,4
