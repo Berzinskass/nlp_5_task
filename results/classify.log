@@ -24,3 +24,4 @@ train 107960 test 26991
  }
 }
 TF-IDF val {1: 0.9247, 3: 0.9444, 10: 0.95, 30: 0.9511} -> {'representation': 'TF-IDF', 'dim': 126679, 'C': 30, 'val_macro_F1': 0.9511, 'accuracy': 0.945907895224334, 'precision_macro': 0.9460640087006104, 'recall_macro': 0.9452305486440705, 'F1_macro': 0.9456160212337978, 'F1_weighted': 0.9458972533347343, 'train_s': 39.5}
+FastText val {0.01: 0.6431, 0.1: 0.6485, 1: 0.6477, 10: 0.6471} -> {'representation': 'FastText', 'dim': 300, 'C': 0.1, 'val_macro_F1': 0.6485, 'accuracy': 0.6352858360194139, 'precision_macro': 0.6347743775165966, 'recall_macro': 0.6304661732261706, 'F1_macro': 0.631284557571103, 'F1_weighted': 0.6337480217549811, 'train_s': 17.3}
