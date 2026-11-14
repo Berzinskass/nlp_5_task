@@ -1,0 +1,28 @@
+{
+  "rows_total": 349696,
+  "rows_nonempty": 349696,
+  "unique_texts_all": 135214,
+  "multi_label_texts": 263,
+  "multi_label_texts_by_n_labels": {
+    "2": 244,
+    "3": 14,
+    "4": 5
+  },
+  "rows_of_multi_label_texts": 3548,
+  "samples_before_dedup": 346148,
+  "samples_before_dedup_per_class": {
+    "D": 69174,
+    "L": 70830,
+    "N": 66178,
+    "P": 71978,
+    "Z": 67988
+  },
+  "samples_after_dedup": 134951,
+  "samples_after_dedup_per_class": {
+    "D": 24997,
+    "L": 26687,
+    "N": 24228,
+    "P": 28057,
+    "Z": 30982
+  }
+}
