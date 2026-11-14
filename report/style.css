@@ -21,9 +21,10 @@ pre { font-size: 7.4pt; line-height: 1.25; background: #f6f6f4; padding: 6px 8px
 pre code { font-size: inherit; }
 .titlepage { height: 245mm; display: flex; flex-direction: column; justify-content: center; text-align: center; break-after: page; }
 .titlepage .t1 { font-size: 20pt; font-weight: bold; margin-bottom: 0.4em; }
-.titlepage .t2 { font-size: 13pt; margin-bottom: 3em; }
+.titlepage .t2 { font-size: 13pt; margin-bottom: 2em; }
 .pagebreak { break-before: page; }
 .small { font-size: 9.5pt; }
 caption { caption-side: top; text-align: left; font-size: 9.5pt; padding-bottom: 0.3em; color: #222; }
 pre > code.sourceCode > span { text-indent: -2em !important; padding-left: 2em !important; }
 div.sourceCode { margin: 0.4em 0 !important; }
+.titlepage .abstract { text-align: justify; font-size: 10.5pt; line-height: 1.35; margin: 0 8mm 3em; }
