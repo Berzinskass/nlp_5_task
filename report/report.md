@@ -61,57 +61,40 @@ Table: Table 2. Most distinctive lemmas of each class (top 5), with English glos
 
 # 4. Text representations
 
-The dataset was split into a training set (80 %, 107,960 texts) and a test set (20 %, 26,991 texts) with stratified sampling (`random_state = 42`); class proportions are identical in both sets. Every data-dependent step — the TF-IDF vocabulary and IDF weights, FastText training, feature standardisation and the choice of the regularisation strength — used the training set only. Three representations were chosen, one from each category (Table 3).
+The data were split into training (80 %, 107,960 texts) and test (20 %, 26,991 texts) sets with stratified sampling. All data-dependent steps (TF-IDF vocabulary and IDF, FastText training, scaling, choice of *C*) used only the training set. One method was chosen from each category:
 
-1. **TF-IDF (frequency-based).** Word unigrams and bigrams of the raw lower-cased text (`min_df = 2`, `max_df = 0.5`, sublinear TF, L2 normalisation). Raw word forms were used instead of lemmas because Lithuanian inflection carries useful signal (person and mood of verbs, e.g. imperatives in anger) and pronouns, which are stop words, are strong cues (Figure 4). TF-IDF is a strong, transparent baseline for short texts with class-specific vocabulary.
-2. **FastText (static embeddings).** A 300-dimensional skip-gram FastText model (window 5, character n-grams 3–6, 10 epochs) was trained with gensim on the training texts only; a text vector is the mean of its word vectors. FastText was chosen over Word2Vec/GloVe because Lithuanian is highly inflected: sub-word n-grams give vectors to unseen word forms and share information between forms of one lemma.
-3. **Sentence-BERT (contextual embeddings).** The pretrained multilingual model `paraphrase-multilingual-MiniLM-L12-v2` (12 transformer layers, trained on 50+ languages including Lithuanian) encodes each text into a 384-dimensional vector by mean pooling of contextual token embeddings. It was chosen because it produces sentence-level vectors directly and runs on a CPU; it was used frozen (no fine-tuning).
+1. **TF-IDF** of word uni- and bigrams of the raw text — a strong, transparent baseline. Raw word forms were kept because inflection and pronouns are useful cues (Figure 4).
+2. **FastText** (300-d skip-gram, character 3–6-grams) trained on the training texts; a text vector is the mean of its word vectors. Sub-word n-grams suit highly inflected Lithuanian and cover unseen word forms.
+3. **Sentence-BERT** — the pretrained multilingual `paraphrase-multilingual-MiniLM-L12-v2` (supports Lithuanian), giving a 384-d sentence vector; used without fine-tuning.
 
-Table: Table 3. Comparison of the text representations (computed on the full dataset).
+Table: Table 3. Comparison of the text representations.
 
 | Property | TF-IDF | FastText | Sentence-BERT |
 |:--|--:|--:|--:|
 | Dimensionality | 126,679 | 300 | 384 |
 | Sparsity (share of zeros) | 99.99 % | 0 % | 0 % |
-| Non-zero values per text (mean) | 12.4 | 300 | 384 |
-| Fitted on our data | vocabulary + IDF | whole model (33,757 words) | no (pretrained) |
-| Word order / context | local (bigrams) | none (average) | full sentence context |
-| Similarity of synonyms | none | morphological, partly semantic | semantic |
-| Feature extraction time (CPU) | 3 s | 45 s | 375 s |
+| Non-zero values per text | 12.4 | 300 | 384 |
+| Semantic information | none (exact words) | mostly morphological | sentence meaning |
 
-TF-IDF is extremely high-dimensional and sparse: each text activates only ~12 of 126,679 features, and every feature is an exact word or word pair, so synonyms and different inflections of the same word are unrelated. The two embedding methods are dense and low-dimensional (300–384 features, ~330× fewer). The nearest neighbours of FastText vectors show that it mainly captures morphology: *džiaugsmas* 'joy' is closest to its own case forms (*džiaugsmai, džiaugsmui, džiaugsmą*) and *kvailys* 'fool' to *kvaily, kvaila, kvailystė*, but *miestas* 'city' is also close to the rhyming *kviestas, sviestas* and *pyktis* 'anger' to other words ending in *-tis* (*keiktis* 'to swear', but also *suktis, žūtis*). With only ~0.8 M training tokens, its semantics is shallow, and averaging discards word order. Sentence-BERT is the only representation that models context and meaning at the sentence level (paraphrases receive similar vectors), but it was trained for semantic similarity, not emotion.
+TF-IDF is huge and sparse, and treats different forms and synonyms of a word as unrelated. The embeddings are dense and ~330× smaller. FastText's nearest neighbours are mostly forms of the same word (*džiaugsmas* → *džiaugsmai, džiaugsmui*) or words with the same ending (*miestas* → *sviestas*), so its semantics is shallow. Only Sentence-BERT captures the meaning of the whole sentence.
 
 # 5. Emotion classification
 
-For each representation a multinomial Logistic Regression (scikit-learn, L-BFGS, up to 3,000 iterations) was trained on the same training set and evaluated on the same test set. Dense embeddings were standardised. The inverse regularisation strength *C* was chosen from four values by macro-F1 on a 10 % validation part of the training set, and the final model was re-trained on the full training set. The results are given in Table 4 (precision, recall and F1 are macro-averaged; the classes are nearly balanced, so weighted averages differ by < 0.003), per-class F1 in Table 5 and the confusion matrices in Figure 5.
+A Logistic Regression was trained for each representation on the same training set (*C* chosen on a validation part of it) and tested on the same test set. Results are in Table 4 (macro averages) and the confusion matrices in Figure 5.
 
-Table: Table 4. Classification results on the test set (26,991 texts).
+Table: Table 4. Classification results on the test set.
 
-| Representation | Dim. | *C* | Accuracy | Precision | Recall | F1-score |
-|:--|--:|--:|--:|--:|--:|--:|
-| TF-IDF (uni+bigrams) | 126,679 | 30 | **0.946** | **0.946** | **0.945** | **0.946** |
-| FastText (mean) | 300 | 0.1 | 0.635 | 0.635 | 0.630 | 0.631 |
-| Sentence-BERT (MiniLM) | 384 | 1 | 0.620 | 0.621 | 0.616 | 0.617 |
-
-Table: Table 5. Per-class F1-score on the test set.
-
-| Class | TF-IDF | FastText | Sentence-BERT |
-|:--|--:|--:|--:|
-| neutral | 0.952 | 0.680 | 0.661 |
-| joy | 0.947 | 0.667 | 0.669 |
-| surprise | 0.942 | 0.584 | 0.559 |
-| sadness | 0.938 | 0.547 | 0.562 |
-| anger | 0.949 | 0.679 | 0.635 |
+| Representation | Accuracy | Precision | Recall | F1-score |
+|:--|--:|--:|--:|--:|
+| TF-IDF | **0.946** | **0.946** | **0.945** | **0.946** |
+| FastText | 0.635 | 0.635 | 0.630 | 0.631 |
+| Sentence-BERT | 0.620 | 0.621 | 0.616 | 0.617 |
 
 ![Figure 5. Row-normalised confusion matrices (% of the true class, counts in brackets) for the three representations.](../figures/fig6_confusion_matrices.png){width=94%}
 
-**TF-IDF performs best by a wide margin** (accuracy 0.946 vs. 0.635 and 0.620), and its errors are small and spread almost evenly over all class pairs (each ≤ 2 % of a class; the largest are joy→sadness, 99 texts, and sadness→neutral, 94). FastText is slightly better than Sentence-BERT, and the two embedding models make very similar errors. For them, **neutral and anger are the easiest classes and surprise and sadness the hardest** (F1 0.55–0.58). The most common errors are sadness→anger (15–16 % of sadness texts), surprise→anger (16 %), surprise→neutral (14–15 %), anger→sadness (14 % for Sentence-BERT) and joy→neutral (12–13 %). These mirror the text analysis: sadness and anger share negative, pronoun- and verb-rich vocabulary, surprise contains factual sentences that resemble neutral news, and joy texts without explicit emotion words fall back to neutral. Errors also concentrate in very short texts: for 1–3-word texts accuracy is 0.85 (TF-IDF) and 0.48 (Sentence-BERT), against 0.997 and 0.75 for texts of 16+ words. 3.2 % of test texts are misclassified by all three models — typically short fragments with no emotional content of their own, e.g. *ir gegužės vakarais* 'and in May evenings' (sadness, predicted joy) or *žvelgdami į dangų matote daugybę žvaigždžių* 'looking at the sky you see many stars' (joy, predicted sadness). In this corpus the label comes from the emotion in which the script was meant to be read, not necessarily from the meaning of each individual sentence.
+**TF-IDF performs best by a wide margin**, and its few errors (≤ 2 % per class pair) are spread evenly. FastText and Sentence-BERT make similar errors: neutral and anger are the easiest classes, while surprise and sadness are the hardest (F1 0.55–0.58). The most common errors are sadness→anger and surprise→anger (15–16 %), surprise→neutral (~14 %) and joy→neutral (~13 %). This matches the text analysis: sadness and anger share negative vocabulary, and surprise and joy without explicit emotion words resemble neutral sentences. Short texts are the hardest: for 1–3-word texts accuracy is 0.85 (TF-IDF) and 0.48 (Sentence-BERT).
 
-**Why is TF-IDF so much better?** The corpus was built from a limited set of emotional scripts, each read by several speakers, and the transcripts of the same sentence differ slightly between recordings (word endings, a missing or extra word, e.g. *…kai galime paleisti…* / *…kai galima paleisti…*). Exact duplicate removal does not merge such variants, and a random split puts them on both sides. For every test text we computed the highest cosine similarity (character 3–4-grams) to any training text: 47.8 % of test texts have a training neighbour with similarity ≥ 0.9, and simply copying the label of the most similar training text already gives 95.6 % accuracy. TF-IDF with bigrams and weak regularisation (*C* = 30) exploits exactly these exact word overlaps. Figure 6 shows that its accuracy falls from 0.99 for near-duplicates to 0.64 for the 4.5 % of test texts without a close neighbour (< 0.6), while the embeddings fall from ~0.68 to ~0.48. Thus TF-IDF remains the best representation even for unseen sentences — the classes differ strongly in topic and vocabulary (Section 3) — but its 0.946 largely measures recognition of the source script, and the realistic accuracy for genuinely new texts is closer to 0.6.
-
-![Figure 6. Test accuracy as a function of the similarity between a test text and its most similar training text.](../figures/fig7_near_duplicates.png){width=60%}
-
-The embedding models are weaker for two reasons. Averaging FastText vectors and pooling Sentence-BERT tokens compress a text into a few hundred dimensions that encode its general topic, while the decisive cues are often single words (an insult, *liūdna*, *neįtikėtina*) that get diluted. In addition, the paraphrase-trained Sentence-BERT model is frozen and multilingual — it represents what a sentence is about rather than its emotional tone, and its Lithuanian coverage is limited — so a linear classifier on top of it is close to FastText trained on the data itself.
+TF-IDF's score is inflated by **near-duplicates**: the same sentence read by different speakers was transcribed slightly differently, so exact duplicate removal misses the variants and they end up in both sets. 47.8 % of test texts have a training text with character-similarity ≥ 0.9, and just copying the label of the most similar training text gives 95.6 % accuracy. On test texts without a close training neighbour, accuracy is 0.64 for TF-IDF and ~0.48 for the embeddings. TF-IDF thus remains best, but its realistic accuracy on new texts is closer to 0.6. The embeddings are weaker because averaging dilutes decisive single words (an insult, *liūdna*), and the frozen Sentence-BERT encodes what a sentence is about rather than its emotional tone.
 
 # 6. Conclusions
 
@@ -124,5 +107,5 @@ The embedding models are weaker for two reasons. Averaging FastText vectors and 
 
 # Appendix. Python code
 
-The code is organised into five scripts, run in this order: `prepare_dataset.py` (Section 2), `text_analysis.py` (Section 3), `classify.py` (Sections 4–5) and `near_duplicate_analysis.py` (Figure 6); `common.py` holds shared settings. Python 3.13, pandas 3, spaCy 3.8 with `lt_core_news_md` 3.7, gensim 4.4, sentence-transformers 6.3, scikit-learn 1.9, PyTorch 2 (CPU).
+The code is organised into five scripts, run in this order: `prepare_dataset.py` (Section 2), `text_analysis.py` (Section 3), `classify.py` (Sections 4–5) and `near_duplicate_analysis.py` (near-duplicate check, Section 5); `common.py` holds shared settings. Python 3.13, pandas 3, spaCy 3.8 with `lt_core_news_md` 3.7, gensim 4.4, sentence-transformers 6.3, scikit-learn 1.9, PyTorch 2 (CPU).
 
