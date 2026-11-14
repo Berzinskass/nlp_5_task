@@ -11,7 +11,7 @@ Logistic Regression. The report is in [`report/report.pdf`](report/report.pdf).
 | Sentence-BERT (`paraphrase-multilingual-MiniLM-L12-v2`) | 0.620 | 0.617 |
 
 Note: ~48 % of test texts have a near-duplicate (transcription variant) in the training set, which
-inflates the TF-IDF score; see Section 5 and Figure 7 of the report.
+inflates the TF-IDF score; see Section 5 and Figure 6 of the report.
 
 ## Layout
 
