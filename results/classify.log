@@ -1,3 +1,26 @@
 train 107960 test 26991
 {'džiaugsmas': [('džiaugsmynas', 0.91), ('džiaugsmai', 0.874), ('džiaugs', 0.86), ('džiaugsmui', 0.86), ('džiaugsmą', 0.859), ('džiaugsmu', 0.858)], 'liūdna': [('liūdnajei', 0.939), ('liūdni', 0.9), ('liūdno', 0.876), ('liūdnų', 0.869), ('liūdnoji', 0.825), ('neliūdna', 0.825)], 'pyktis': [('šeputis', 0.833), ('keiktis', 0.823), ('suktis', 0.822), ('žūtis', 0.822), ('kištis', 0.82), ('veltis', 0.82)], 'neįtikėtina': [('neįtikėtinai', 0.95), ('neįtikėtini', 0.948), ('neįtikėtiną', 0.947), ('neįtikėtino', 0.945), ('neįtikėtinas', 0.931), ('netikėtina', 0.921)], 'kvailys': [('kvaily', 0.943), ('kvaila', 0.922), ('kvailam', 0.92), ('kvaile', 0.915), ('kvailė', 0.912), ('kvailystė', 0.897)], 'miestas': [('kviestas', 0.837), ('sviestas', 0.834), ('ištiestas', 0.829), ('apšviestas', 0.778), ('mieste', 0.776), ('miestely', 0.768)]}
 Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 3268.41it/s]
+{
+ "TF-IDF": {
+  "dim": 126679,
+  "fit_s": 3.33625864982605,
+  "sparsity_%": 99.99,
+  "mean_nonzero_per_text": 12.4
+ },
+ "FastText": {
+  "dim": 300,
+  "fit_s": 45.3740873336792,
+  "vocab": 33757,
+  "sparsity_%": 0.0,
+  "mean_nonzero_per_text": 300.0
+ },
+ "SBERT": {
+  "dim": 384,
+  "fit_s": 375.4295926094055,
+  "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "sparsity_%": 0.0,
+  "mean_nonzero_per_text": 384.0
+ }
+}
+TF-IDF val {1: 0.9247, 3: 0.9444, 10: 0.95, 30: 0.9511} -> {'representation': 'TF-IDF', 'dim': 126679, 'C': 30, 'val_macro_F1': 0.9511, 'accuracy': 0.945907895224334, 'precision_macro': 0.9460640087006104, 'recall_macro': 0.9452305486440705, 'F1_macro': 0.9456160212337978, 'F1_weighted': 0.9458972533347343, 'train_s': 39.5}
