@@ -1,10 +1,4 @@
-"""Parts 3-4: three text representations + Logistic Regression emotion classifiers.
 
-1. TF-IDF (word uni+bigrams)                      - frequency-based
-2. FastText trained on the training set (gensim)  - static word embeddings, mean-pooled
-3. paraphrase-multilingual-MiniLM-L12-v2 (SBERT)  - contextual sentence embeddings
-All data-dependent fitting (vocabulary, IDF, FastText training, scaler, LR) uses the training set only.
-"""
 import json
 import time
 
@@ -39,14 +33,16 @@ tok = [t.split() for t in texts]
 
 info, X = {}, {}
 
-# ------------------------------------------------------------------ 1. TF-IDF
+
+
 t0 = time.time()
 tfidf = TfidfVectorizer(ngram_range=(1, 2), min_df=2, max_df=0.5, sublinear_tf=True, token_pattern=r"(?u)\b\w+\b")
 tfidf.fit([texts[i] for i in idx_tr])
 X["TF-IDF"] = tfidf.transform(texts).tocsr()
 info["TF-IDF"] = {"dim": X["TF-IDF"].shape[1], "fit_s": time.time() - t0}
 
-# ------------------------------------------------------------------ 2. FastText (trained on train only)
+
+
 t0 = time.time()
 ft = FastText(vector_size=300, window=5, min_count=2, sg=1, epochs=10, min_n=3, max_n=6, workers=4, seed=SEED)
 ft.build_vocab([tok[i] for i in idx_tr])
@@ -58,7 +54,9 @@ neigh = {w: [(n, round(float(s), 3)) for n, s in ft.wv.most_similar(w, topn=6)]
 (RES / "fasttext_neighbours.json").write_text(json.dumps(neigh, ensure_ascii=False, indent=1))
 print(neigh)
 
-# ------------------------------------------------------------------ 3. Sentence-BERT (pretrained, frozen)
+
+
+
 MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 cache = CACHE / "sbert_minilm.npy"
 t0 = time.time()
@@ -70,14 +68,16 @@ else:
     np.save(cache, X["SBERT"])
 info["SBERT"] = {"dim": X["SBERT"].shape[1], "fit_s": time.time() - t0, "model": MODEL}
 
-# ------------------------------------------------------------------ representation properties
+
+
 for name, M in X.items():
     nnz = M.nnz if sparse.issparse(M) else int(np.count_nonzero(M))
     info[name]["sparsity_%"] = round(100 * (1 - nnz / (M.shape[0] * M.shape[1])), 3)
     info[name]["mean_nonzero_per_text"] = round(nnz / M.shape[0], 1)
 print(json.dumps(info, indent=1))
 
-# ------------------------------------------------------------------ classification
+
+
 def make_lr(C):
     return LogisticRegression(C=C, max_iter=3000, solver="lbfgs", random_state=SEED)
 
@@ -116,7 +116,9 @@ per_class = pd.concat({n: pd.read_csv(RES / f"report_{n}.csv", index_col=0).loc[
 per_class.round(3).to_csv(RES / "per_class_metrics.csv")
 print(res.to_string()); print(per_class.round(3))
 
-# ------------------------------------------------------------------ confusion matrices
+
+
+
 fig, axes = plt.subplots(1, 3, figsize=(11, 3.6))
 for ax, (name, cm) in zip(axes, cms.items()):
     cmn = cm / cm.sum(axis=1, keepdims=True) * 100
@@ -130,7 +132,9 @@ for ax, (name, cm) in zip(axes, cms.items()):
     ax.set_title(f"{name} (acc. {acc:.3f})"); ax.grid(False)
 fig.tight_layout(); fig.savefig(FIG / "fig6_confusion_matrices.png"); plt.close(fig)
 
-# ------------------------------------------------------------------ error analysis
+
+
+
 te = df.iloc[idx_te][["text", "emotion"]].reset_index(drop=True)
 for name in X: te[name] = preds[name]
 te["n_correct"] = sum((te[n] == te.emotion).astype(int) for n in X)
@@ -150,7 +154,9 @@ acc_len = acc_len.groupby("bin", observed=True).apply(lambda g: pd.Series({n: (g
 acc_len.round(3).to_csv(RES / "accuracy_by_length.csv"); print(acc_len.round(3))
 (te[te.n_correct == 0].sample(25, random_state=SEED)).to_csv(RES / "hard_examples.csv", index=False)
 
-# ------------------------------------------------------------------ near-duplicate check (train vs test)
+
+
+
 cv = TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 4), min_df=2).fit([texts[i] for i in idx_tr])
 A, B = cv.transform([texts[i] for i in idx_te]), cv.transform([texts[i] for i in idx_tr]).T.tocsc()
 best = np.concatenate([(A[s:s + 2000] @ B).max(axis=1).toarray().ravel() for s in range(0, A.shape[0], 2000)])
