@@ -10,7 +10,8 @@ RES = ROOT / "results"
 SPACY_MODEL = ROOT / "models" / "lt_core_news_md"
 SEED = 42
 
-# Folder letter -> emotion (D=džiaugsmas, L=liūdesys, N=nustebimas, P=pyktis, Z=neutral)
+
+
 LABEL_NAMES = {"Z": "neutral", "D": "joy", "N": "surprise", "L": "sadness", "P": "anger"}
 ORDER = ["neutral", "joy", "surprise", "sadness", "anger"]
 COLORS = dict(zip(ORDER, ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"]))
