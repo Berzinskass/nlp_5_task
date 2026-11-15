@@ -1,5 +1,4 @@
-"""Diagnostic: how much do near-duplicate train/test texts (transcription variants of the same
-sentence read by different speakers) inflate the scores? Accuracy by max char-n-gram cosine to train."""
+
 import json
 
 import matplotlib.pyplot as plt
