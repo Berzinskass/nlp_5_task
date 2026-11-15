@@ -1,4 +1,4 @@
-"""Part 2: text analysis - length, vocabulary (lemmas w/o stop words), POS distributions."""
+
 import json
 from collections import Counter
 
@@ -19,7 +19,8 @@ set_style()
 df = pd.read_csv(DATA / "emo_text_dataset.csv")
 df["emotion"] = df["label"].map(LABEL_NAMES)
 
-# ---------------------------------------------------------------- class distribution
+
+
 counts = df["emotion"].value_counts().reindex(ORDER)
 stats = json.loads((RES / "dataset_stats.json").read_text())
 before = pd.Series(stats["samples_before_dedup_per_class"]).rename(index=LABEL_NAMES).reindex(ORDER)
@@ -37,7 +38,8 @@ ax.legend(handles=[Patch(color="#898781", alpha=0.35, label="before duplicate re
           loc="upper left", fontsize=7.5, ncol=2, bbox_to_anchor=(0, 1.15))
 fig.savefig(FIG / "fig1_class_distribution.png"); plt.close(fig)
 
-# ---------------------------------------------------------------- text length
+
+
 df["n_words"] = df["text"].str.split().str.len()
 len_stats = df.groupby("emotion")["n_words"].describe().reindex(ORDER)
 len_stats["median"] = df.groupby("emotion")["n_words"].median().reindex(ORDER)
@@ -65,7 +67,8 @@ ax.set_xlabel("Text length (words)"); ax.set_ylabel("Share of class texts (%)")
 ax.set_title("(b) Length distributions (1–29 words)"); ax.legend(fontsize=7.5)
 fig.tight_layout(); fig.savefig(FIG / "fig2_text_length.png"); plt.close(fig)
 
-# ---------------------------------------------------------------- spaCy processing
+
+
 nlp = spacy.load(SPACY_MODEL, disable=["parser", "ner"])
 lemmas, pos_tags = [], []
 for doc in nlp.pipe(df["text"].tolist(), batch_size=1000, n_process=4):
@@ -77,7 +80,8 @@ df["lemmas"] = [" ".join(l) for l in lemmas]
 df["pos"] = [" ".join(p) for p in pos_tags]
 df[["text", "label", "emotion", "n_words", "lemmas", "pos"]].to_csv(DATA / "emo_text_processed.csv", index=False)
 
-# ---------------------------------------------------------------- vocabulary
+
+
 freq = {e: Counter(w for s in df.loc[df.emotion == e, "lemmas"] for w in s.split()) for e in ORDER}
 TOPN = 15
 top = {e: freq[e].most_common(TOPN) for e in ORDER}
@@ -133,7 +137,8 @@ for ax, e in zip(axes.flat, ORDER):
     ax.set_title(e, fontsize=11); ax.axis("off")
 fig.tight_layout(w_pad=0.6); fig.savefig(FIG / "fig4_wordclouds.png"); plt.close(fig)
 
-# ---------------------------------------------------------------- POS
+
+
 pos_counts = pd.DataFrame({e: Counter(p for s in df.loc[df.emotion == e, "pos"] for p in s.split()) for e in ORDER}).fillna(0)
 pos_share = (pos_counts / pos_counts.sum() * 100)
 pos_share = pos_share.loc[pos_share.mean(axis=1).sort_values(ascending=False).index]
