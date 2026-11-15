@@ -9,7 +9,7 @@ import spacy
 from spacy.lang.lt.stop_words import STOP_WORDS
 from wordcloud import WordCloud
 
-# spaCy LT list + auxiliary/modal verbs that the list misses and that top every class
+
 EXTRA_STOP = {"būti", "galėti", "turėti", "tapti"}
 STOP = set(STOP_WORDS) | EXTRA_STOP
 
