@@ -1,8 +1,4 @@
-"""Part 1: build a single-label text classification dataset from EMO metadata.csv.
 
-metadata.csv is pipe-separated: <wav path>|<speaker id>|<text>.
-The emotion label is the first folder after 'wavs/' (D, L, N, P, Z).
-"""
 import json
 from pathlib import Path
 
@@ -21,7 +17,8 @@ stats = {"rows_total": len(meta)}
 meta = meta[meta["text"] != ""]
 stats["rows_nonempty"] = len(meta)
 
-# Texts that occur under more than one emotion label
+
+
 n_labels = meta.groupby("text")["label"].nunique()
 multi = n_labels[n_labels > 1].index
 stats["unique_texts_all"] = int(n_labels.size)
